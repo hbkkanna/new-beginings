@@ -7,6 +7,10 @@ tags:
 schemes:
 - "https"
 definitions:
+  Users:
+    type: array
+    items:
+      $ref : "#/definitions/User"
   User:
     type: object
     properties:
@@ -151,6 +155,48 @@ paths:
           description: Unauthorized
         403:
           description: Forbidden
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+        413:
+          description: Request-size limit exceeded
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorMessage"
+    get:
+      description: Get all users based on the query params
+      summary: Get users
+      consumes:
+        - applicaiton/json
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          type: string
+          required: false
+          description: username
+        - name: limit
+          in: query
+          type: integer
+          default: 50
+          required: false
+        - name: offset
+          in: query
+          type: integer
+          default: 0
+          required: false
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Users"
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
           schema:
             $ref: "#/definitions/ErrorMessage"
         413:

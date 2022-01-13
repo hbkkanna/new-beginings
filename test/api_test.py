@@ -1,4 +1,7 @@
-import config
+'''
+   Functional test code
+   Start the http server using 'start.sh' before running this test
+'''
 import requests
 import json
 
@@ -33,7 +36,7 @@ def delete_user(user_id):
 
 def test_post():
     print("-----Start Create User test----")
-
+    # positive case
     resp = requests.post(url=PATH + "/users", json=user)
 
     if resp.status_code != 201:
@@ -42,11 +45,12 @@ def test_post():
     resp_obj = json.loads(resp.content)
     print(resp_obj)
 
+    # negative cases
     resp = requests.post(url=PATH + "/users", json=user)
     if resp.status_code != 409:
         raise AssertionError("Duplicate user test failed")
 
-    #delete_user(resp_obj.get("user_id", ""))
+    delete_user(resp_obj.get("user_id", ""))
 
     resp = requests.post(url=PATH + "/users", json=invalid_input)
     if resp.status_code != 403:
@@ -57,10 +61,12 @@ def test_post():
 
 def test_update():
     print("-----Start Update User test ------")
+
+    # positive case
     resp = requests.post(url=PATH + "/users", json=user)
     resp_obj = json.loads(resp.content)
 
-    resp = requests.put(url=PATH + "/users/" + resp_obj.get("user_id", ""), json=update_user)
+    requests.put(url=PATH + "/users/" + resp_obj.get("user_id", ""), json=update_user)
 
     resp = requests.get(url=PATH + "/users/" + resp_obj.get("user_id", ""))
 
@@ -68,6 +74,7 @@ def test_update():
     if resp_obj.get("phone", None) != "+44 1111111":
         raise AssertionError("Update user test failed")
 
+    # negative cases
     resp = requests.put(url=PATH + "/users/" + resp_obj.get("user_id", ""), json=invalid_input)
     if resp.status_code != 403:
         raise AssertionError("Invalid input user test failed")
@@ -84,12 +91,14 @@ def test_update():
 def test_get():
     print("-----Start Get User test------")
 
+    # positive case
     resp = requests.post(url=PATH + "/users", json=user)
     resp_obj = json.loads(resp.content)
     resp = requests.get(url=PATH + "/users/" + resp_obj.get("user_id", ""))
 
     delete_user(resp_obj.get("user_id", ""))
 
+    # negative cases
     resp = requests.get(url=PATH + "/users/" + "TT-099T")
     if resp.status_code != 404:
         raise AssertionError("get user test NOT FOUND case failed")
@@ -99,6 +108,7 @@ def test_get():
 def test_delete():
     print("-----Start Delete User test------")
 
+    # positive case
     resp = requests.post(url=PATH + "/users", json=user)
     resp_obj = json.loads(resp.content)
 
@@ -106,6 +116,7 @@ def test_delete():
     if resp.status_code != 200:
         raise AssertionError("delete user case failed")
 
+    # negative cases
     resp = requests.delete(url=PATH + "/users/" + "TT-099T")
     if resp.status_code != 404:
         raise AssertionError("delete user test NOT FOUND case failed")
@@ -123,7 +134,7 @@ def test_capacity():
 
 if __name__ == "__main__":
     test_post()
-    #test_get()
-    #test_delete()
-    #test_update()
+    test_get()
+    test_delete()
+    test_update()
     # test_capacity()

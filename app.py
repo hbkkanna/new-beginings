@@ -8,8 +8,8 @@ import traceback
 
 app = Flask(__name__)
 
-
 log = config.config.get_logger()
+
 
 @app.route("/api/v1/users", methods=['POST'])
 def create_user():
@@ -81,6 +81,10 @@ def get_user(user_id):
         err, code = _intern_error(str(ex))
     return _frame_response(found, err, code), code
 
+# TODO - get users paginated way with filters
+@app.route("/api/v1/users", methods=['GET'])
+def get_users(user_id):
+    pass
 
 def _invalid_input():
     return "Invalid Input", 403

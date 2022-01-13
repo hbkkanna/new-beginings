@@ -1,9 +1,8 @@
-"""
-  Utility module - validation
-"""
-
 import random
 
+'''
+ Dummy reference user id generator
+'''
 def create_user_reference():
     prefix = ''.join((random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')) for x in range(2))
     postfix = random.randint(0,100000)
