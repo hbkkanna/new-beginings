@@ -11,6 +11,8 @@
 * setup.sh  ( sets up the server environment)
 * start.sh ( starts the server )
 
+API server accessible with  @ http://localhost:8080/ 
+
 ## How to run functional test cases ? 
  * start.sh ( start the server in a terminal) 
  * source virtualenv/bin/activate
