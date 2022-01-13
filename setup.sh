@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python3 -m virtualenv virtualenv
+python3.9 -m virtualenv virtualenv
 
 source virtualenv/bin/activate
 
